@@ -1,0 +1,20 @@
+﻿@model StringParseViewModel
+<div id="outcomeTable">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="headers"  scope="col">Input</th>
+                <th class="headers" scope="col">Outcome</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Output.Count(); i++)
+            {
+                <tr>
+                    <th>@Model.Input[i]</th>
+                    <th>@Model.Output[i]</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

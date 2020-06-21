@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div>
+    <h1>Local Data Company-Preliminary Test </h1>
+    <h2>Test:SQL </h2>
+    <p><strong>Question</strong></p>
+    <div class="panel panel-success">
+        <div class="panel-body ">
+            <p>Given the following tables, write a query which returns the total footfall count per premises. The resultset should contain the following non-­‐null columns: Business, StreetNo, Street, PostCode, FootfallCount. Premises do not necessarily have footfall for every week (missing counts will have a count of zero). Missing street numbers will be replaced with empty string ''.</p>
+        </div>
+    </div>
+    <p><strong>Answer</strong></p>
+    <div class="panel panel-success">
+        <div class="panel-body ">
+            <p> SET transaction isolation level read uncommitted;</p>
+            <p> SELECT Business, coalesce(StreetNo,'') as StreetNo , Street, PostCode ,  v.FootfallCount </p>
+            <p> FROM Business b </p>
+            <p> LEFT JOIN Premises p ON b.Id=p.BusinessId </p>
+            <p> LEFT JOIN  </p>
+            <p> (SELECT p.Id, SUM(f.[Count]) AS FootfallCount FROM Premises p </p>
+            <p> LEFT JOIN Footfall  f ON p.Id=f.PremisesId GROUP BY p.Id ) v ON v.Id=p.Id </p>
+        </div>
+    </div>
+
+    <h2>Test:C# </h2>
+    <p><strong>Question</strong></p>
+    <div class="panel panel-success">
+        <div class="panel-body ">
+            Write C# code with unit-­‐tests to process a collection of string values which are passed to a method which returns a collection of processed strings. The input strings may be any length and can contain any character. Output strings must not be null or empty string, should be truncated to max length of 15 chars, and contiguous duplicate characters in the same case should be reduced to a single character in the same case. Dollar sign ($) should be replaced with a pound sign (£), and underscores (_) and number 4 should be removed. Code should be test-­‐driven, efficient, re-­‐usable and loosely coupled. The returned collection must not be null.
+        </div>
+    </div>
+    <p><strong>Answer</strong></p>
+    <div class="panel panel-success">
+        <div class="panel-body ">
+            <div>
+                <input class="btn btn-primary" type="button" value="Run" onclick="showAnswer()">
+            </div>
+            <div class="mt-30" id="input">
+            </div>
+            <div class="mt-30" id="outcome">
+            </div>
+            <div class="mt-30" id="errorMsg">
+                <div class="panel">
+                    <div class="panel-body"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    function showAnswer() {
+        removePartialView('outcome');
+        removePartialView('errorMsg');
+        $.ajax({
+               url: '@Url.Action("ShowAnswer", "Home")',
+                    cache: false,
+                    type: "GET",
+                    dataType: "html",
+                    success: function (data) {
+                         debugger;
+                        showPartialView('outcome', data);
+                     },
+                     error: function (request, status, error) {
+                         debugger;
+                         showPartialView('errorMsg', status + error);
+                    }
+                });
+    }
+    function showPartialView(placeholder, data) {
+        $("#" + placeholder).html(data);
+    }
+    function removePartialView(placeholder) {
+        $("#" + placeholder).html('');
+    }
+        </script>
