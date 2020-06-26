@@ -3,20 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 namespace LocalDataCompany.Core
 {
-    public class Input
+    public class Input : IInput
     {
-        private readonly List<string> _inputItems = new List<string>();
+        private readonly List<string> _inputItems;
 
-        private List<string> _outputItems = new List<string>();
-        public List<string> InputItems { 
-            get { return _inputItems; }
-            set { ; }
-        }
-        public List<string> OutputItems
-        {
-            get { return _outputItems; }
-            set {; }
-        }
+        public List<string> InputItems => _inputItems;
+
+        public List<string> OutputItems { get => _outputItems; set => _outputItems = value; }
+
+        private List<string> _outputItems;
+
+     
         public Input(string[] input)
         {
             foreach (var item in input)
@@ -35,22 +32,21 @@ namespace LocalDataCompany.Core
         /// <returns></returns>
         public List<string> Parse()
         {
-            string ouputItem;
-            _outputItems = new List<string>();
+            OutputItems = new List<string>();
             string[] charsToRemove = new string[] { "_", "4"};
-            foreach (string item in _inputItems)
+            foreach (string item in InputItems)
             {
                 if( !string.IsNullOrEmpty(item))
                 {
-                    ouputItem=removeCharacters(item, charsToRemove);
+                    string ouputItem;
+                    ouputItem =removeCharacters(item, charsToRemove);
                     ouputItem = removeDuplicateChars(ouputItem.Replace("$", "£"));
                     if (ouputItem.Length > 15)
                         ouputItem = ouputItem.Substring(0, 15);
-                    _outputItems.Add(ouputItem);
-                    ouputItem = String.Empty;
-                }
+                    OutputItems.Add(ouputItem);
+                 }
             }
-            return _outputItems;
+            return OutputItems;
         }
         public string removeCharacters(string item, string[] charsToRemove)
         {
